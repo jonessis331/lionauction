@@ -49,9 +49,7 @@
         Depending on further development and expansion, advanced topics such as data storage optimization, query processing efficiency, and transaction management may also be explored to enhance the robustness and performance of the system.
     </p>
 
-  <script>
-        document.getElementById('year').textContent = new Date().getFullYear();
-  </script>
+
 
 </body>
 </html>
