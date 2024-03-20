@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+  <head>
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  <style>
+    .dropdown-submenu {
+      position: relative;
+    }
+
+    .dropdown-submenu .dropdown-menu {
+      top: 0;
+      left: 100%;
+      margin-top: -1px;
+    }
+  </style>
+    <title>Seller Dashboard</title>
+  </head>
+  <body>
+    <h1>Welcome, {{ loggedInUser }}</h1>
+
+  <div class="dropdown">
+    <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">Browse All Categories
+    <span class="caret"></span></button>
+    <ul class="dropdown-menu">
+      {% for parent in parent_categories %}
+      <li class="dropdown-submenu">
+        <a class="test" tabindex="-1" href="#">{{ parent.parent_category }} <span class="caret"></span></a>
+        <ul class="dropdown-menu">
+          {% for category in categories %}
+          {% if category.parent_category == parent.parent_category %}
+          <li><a tabindex="-1" href="#" data-category="{{ category.category_name }}">{{ category.category_name }}</a></li>
+          {% endif %}
+          {% endfor %}
+        </ul>
+      </li>
+      {% endfor %}
+    </ul>
+  </div>
+  <ul id="listings-container" class="list-group"></ul>
+
+    <h2>Active Listings</h2>
+    <ul>
+      {% for listing in active_listings %}
+      <li>{{ listing.Auction_Title }} - {{ listing.Product_Name }} - {{ listing.Reserve_Price }} - {{ listing.Quantity }} - {{ listing.Status }}</li>
+      <form method="GET" action="{{ url_for('edit_listing', listing_id=listing.Listing_ID) }}">
+        <input type="submit" value="Edit">
+      </form>
+      {% endfor %}
+    </ul>
+
+    <h2>Sold Listings</h2>
+    <ul>
+      {% for listing in sold_listings %}
+      <li>{{ listing.Auction_Title }} - {{ listing.Product_Name }} - {{ listing.Reserve_Price }} - {{ listing.Quantity }} - {{ listing.Status }}</li>
+      {% endfor %}
+    </ul>
+
+    <h2>Inactive Listings</h2>
+    <ul>
+      {% for listing in inactive_listings %}
+      <li>{{ listing.Auction_Title }} - {{ listing.Product_Name }} - {{ listing.Reserve_Price }} - {{ listing.Quantity }} - {{ listing.Status }}</li>
+      {% if listing.Status == 0 %}
+      <li>Reason for Removing: {{ listing.Reason_To_Remove }}</li>
+      {% endif %}
+      {% endfor %}
+    </ul>
+
+    <form method="GET" action="{{ url_for('publish_listing') }}">
+      <input type="submit" value="New Listing">
+    </form>
+
+  <script>
+const listings = {{ listings|tojson }};
+
+$(document).ready(function(){
+  $('.dropdown-submenu a.test').on("click", function(e){
+    $(this).next('ul').toggle();
+    e.stopPropagation();
+    e.preventDefault();
+  });
+
+  $('.dropdown-menu li a[data-category]').on('click', function(e) {
+    e.preventDefault();
+    const category = $(this).data('category');
+    const filteredListings = listings.filter(listing => listing.Category === category);
+
+    const $listingsContainer = $('#listings-container');
+    $listingsContainer.empty();
+
+    filteredListings.forEach(listing => {
+      $listingsContainer.append(`
+        <li class="list-group-item">
+          ${listing.Auction_Title}<br>
+          ${listing.Product_Name}<br>
+          ${listing.Product_Description}<br>
+        </li>`);
+    });
+  });
+});
+</script>
+
+  </body>
+</html>

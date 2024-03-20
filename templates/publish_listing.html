@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Publish Listing</title>
+  </head>
+  <body>
+    <h1>Publish New Auction Listing</h1>
+    <form method="POST" action="{{ url_for('publish_listing') }}">
+      <label for="category">Category:</label>
+      <input type="text" name="category" required><br><br>
+
+      <label for="title">Auction Title:</label>
+      <input type="text" name="title" required><br><br>
+
+      <label for="name">Product Name:</label>
+      <input type="text" name="name" required><br><br>
+
+      <label for="description">Product Description:</label><br>
+      <textarea name="description" rows="5" cols="50" required></textarea><br><br>
+
+      <label for="quantity">Quantity:</label>
+      <input type="number" name="quantity" min="1" required><br><br>
+
+
+        <label for="max_bids">Max Bids:</label>
+      <input type="number" name="max_bids" min="1" required><br><br>
+
+      <label for="reserve_price">Reserve Price:</label>
+      <input type="number" name="reserve_price" min="0" step="0.01" required><br><br>
+
+      <input type="submit" value="Publish Listing">
+    </form>
+  </body>
+</html>

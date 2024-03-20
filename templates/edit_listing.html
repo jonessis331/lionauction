@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Edit Listing</title>
+  </head>
+  <body>
+    <h1>Edit Auction Listing</h1>
+    <form method="POST" action="{{ url_for('edit_listing', listing_id=listing.Listing_ID) }}">
+      <label for="category">Category:</label>
+      <input type="text" name="category" value="{{ listing.Category }}" required><br><br>
+
+      <label for="title">Auction Title:</label>
+      <input type="text" name="title" value="{{ listing.Auction_Title }}" required><br><br>
+
+      <label for="name">Product Name:</label>
+      <input type="text" name="name" value="{{ listing.Product_Name }}" required><br><br>
+
+      <label for="description">Product Description:</label><br>
+      <textarea name="description" rows="5" cols="50" required>{{ listing.Product_Description }}</textarea><br><br>
+
+      <label for="quantity">Quantity:</label>
+      <input type="number" name="quantity" value="{{ listing.Quantity }}" min="1" required><br><br>
+
+      <label for="reserve_price">Reserve
+          Price:</label>
+        <input type="number" name="reserve_price" value="{{ listing.Reserve_Price }}" min="0" step="0.01" required><br><br>
+        <input type="submit" value="Update Listing">
+    </form>
+
+    <form method="POST" action="{{ url_for('remove_listing', listing_id=listing.Listing_ID) }}">
+        <label for="reason_for_remove">Reason for Removing:</label>
+        <input type="text" name="reason_for_remove">
+        <input type="submit" value="Make Inactive">
+    </form>
+
+    </body>
+</html>

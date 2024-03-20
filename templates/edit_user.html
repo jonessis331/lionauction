@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Edit User Profile</title>
+  </head>
+  <body>
+    <h1>Edit Your Profile</h1>
+    <form method="POST" action="{{ url_for('edit_user') }}">
+
+      <label for="name">First Name:</label>
+      <input type="text" name="name" value="{{ user.first_name }}" required><br><br>
+
+      <label for="lastname">Last Name:</label>
+      <input type="text" name="lastname" value="{{ user.last_name }}" required><br><br>
+
+      <label for="age">Age:</label>
+      <input type="number" name="age" value="{{ user.age }}" required><br><br>
+
+      <label for="gender">Gender:</label>
+      <select name="gender" required>
+        <option value="male" {% if user.gender == 'male' %}selected{% endif %}>Male</option>
+        <option value="female" {% if user.gender == 'female' %}selected{% endif %}>Female</option>
+      </select><br><br>
+
+      <label for="major">Major:</label>
+      <input type="text" name="major" value="{{ user.major }}" required><br><br>
+
+      <label for="street_num">Street Number:</label>
+      <input type="text" name="street_num" value="{{ user.street_num }}" required><br><br>
+
+      <label for="street_name">Street Name:</label>
+      <input type="text" name="street_name" value="{{ user.street_name }}" required><br><br>
+
+      <label for="zipcode">Zipcode:</label>
+      <input type="text" name="zipcode" value="{{ user.zipcode }}" required><br><br>
+
+      <!-- Credit Card fields -->
+      <label for="credit_card">Last 4 Digits of Credit Card Number:</label>
+      <input type="text" name="credit_card" value="{{ user.credit_card[-4:] }}" required><br><br>
+
+      <label for="card_type">Card Type:</label>
+      <input type="text" name="card_type" value="{{ user.card_type }}" required><br><br>
+
+      <label for="expire_month">Expiration Month:</label>
+      <input type="number" name="expire_month" value="{{ user.expire_month }}" required><br><br>
+
+      <label for="expire_year">Expiration Year:</label>
+      <input type="number" name="expire_year" value="{{ user.expire_year }}" required><br><br>
+
+      <label for="security_code">Security Code:</label>
+      <input type="text" name="security_code" value="{{ user.security_code }}" required><br><br>
+
+      <input type="submit" value="Update Profile">
+    </form>
+  </body>
+</html>

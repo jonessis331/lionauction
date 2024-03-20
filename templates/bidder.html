@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+    <form method="GET" action="{{ url_for('edit_user') }}">
+    <input type="submit" value="Your Profile">
+
+        <a href="{{ url_for('my_bids') }}" class="btn">View My Bids</a>
+        <a href="{{ url_for('notifications') }}" class="btn">View Notifications</a>
+</form>
+<style>
+.dropdown-submenu {
+  position: relative;
+}
+
+.dropdown-submenu .dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -1px;
+}
+</style>
+</head>
+<body>
+
+
+<div class="container">
+  <h2>Auctions</h2>
+  <div class="dropdown">
+    <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">Categories
+    <span class="caret"></span></button>
+    <ul class="dropdown-menu">
+      {% for parent in parent_categories %}
+      <li class="dropdown-submenu">
+        <a class="test" tabindex="-1" href="#">{{ parent.parent_category }} <span class="caret"></span></a>
+        <ul class="dropdown-menu">
+          {% for category in categories %}
+          {% if category.parent_category == parent.parent_category %}
+          <li><a tabindex="-1" href="#" data-category="{{ category.category_name }}">{{ category.category_name }}</a></li>
+          {% endif %}
+          {% endfor %}
+        </ul>
+      </li>
+      {% endfor %}
+    </ul>
+  </div>
+  <ul id="listings-container" class="list-group"></ul>
+</div>
+
+<script>
+const listings = {{ listings|tojson }};
+
+$(document).ready(function(){
+  $('.dropdown-submenu a.test').on("click", function(e){
+    $(this).next('ul').toggle();
+    e.stopPropagation();
+    e.preventDefault();
+  });
+
+  $('.dropdown-menu li a[data-category]').on('click', function(e) {
+    e.preventDefault();
+    const category = $(this).data('category');
+    const filteredListings = listings.filter(listing => listing.Category === category);
+
+    const $listingsContainer = $('#listings-container');
+    $listingsContainer.empty();
+
+    filteredListings.forEach(listing => {
+      const bidOnProductUrl = "{{ url_for('bidOnProduct', listing_id=0, seller_email='dummy') }}"
+        .replace("0", listing.Listing_ID)
+        .replace("dummy", encodeURIComponent(listing.Seller_Email));
+
+      $listingsContainer.append(`
+        <li class="list-group-item">
+          <a href="${bidOnProductUrl}" style="text-decoration: none; color: cadetblue;">
+            ${listing.Auction_Title}
+          </a><br>
+          ${listing.Product_Name}<br>
+          ${listing.Product_Description}<br>
+        </li>`);
+    });
+  });
+});
+</script>
+
+</body>
+</html>

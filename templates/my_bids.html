@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My Bids</title>
+</head>
+<body>
+    <h1>My Bids</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Auction ID</th>
+                <th>Product Name</th>
+                <th>My Bid Price</th>
+                <th>Current Highest Bid</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for bid, auction_listing, highest_bid in bid_list %}
+                <tr>
+                    <td>{{ bid.Listing_ID }}</td>
+                    <td>{{ auction_listing.Product_Name }}</td>
+                    <td>{{ bid.Bid_Price }}</td>
+                    <td>{{ highest_bid.max_bid }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ url_for('bidder') }}">Back to Bidder Page</a>
+</body>
+</html>

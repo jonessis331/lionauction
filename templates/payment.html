@@ -1,0 +1,25 @@
+{% extends 'bidOnProduct.html' %}
+
+{% block content %}
+    <h1>Payment Process</h1>
+    <p>You are the winner of the auction for "{{ listingInfo.Product_Name }}". Please enter your payment information below:</p>
+
+    <form action="{{ url_for('processPayment', listing_id=listingInfo.Listing_ID, seller_email=listingInfo.Seller_Email) }}" method="post">
+        <label for="card_name">Cardholder Name:</label>
+        <input type="text" name="card_name" id="card_name" required>
+
+        <label for="card_number">Card Number:</label>
+        <input type="text" name="card_number" id="card_number" pattern="\d{16}" required>
+
+        <label for="expiry_month">Expiry Month:</label>
+        <input type="number" name="expiry_month" id="expiry_month" min="1" max="12" required>
+
+        <label for="expiry_year">Expiry Year:</label>
+        <input type="number" name="expiry_year" id="expiry_year" min="{{ current_year }}" required>
+
+        <label for="cvv">CVV:</label>
+        <input type="text" name="cvv" id="cvv" pattern="\d{3}" required>
+
+        <button type="submit">Submit Payment</button>
+    </form>
+{% endblock %}

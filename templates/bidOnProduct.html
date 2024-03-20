@@ -1,0 +1,30 @@
+{% block content %}
+    <h1>{{ listingInfo.Auction_Title }}</h1>
+    <p>Name: {{ listingInfo.Product_Name }}</p>
+    <p>Description: {{ listingInfo.Product_Description }}</p>
+    <p>Quantity: {{ listingInfo.Quantity }}</p>
+    <p>Reserve Price: ${{ listingInfo.Reserve_Price }}</p>
+    <p>Max Bids: {{ listingInfo.Max_bids }}</p>
+    <p>Remaining Bids: {{ remaining_bids }}</p>
+    <p>Status: {{ listingInfo.Status }}</p>
+    <p>Remaining Bids: {{ remaining_bids }}</p>
+    {% if highest_bidder_email == session["loggedInUser"] %}
+        <p><strong>You are currently the highest bidder.</strong></p>
+    {% endif %}
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <form action="{{ url_for('bidOnProduct', listing_id=listingInfo.Listing_ID, seller_email=listingInfo.Seller_Email) }}" method="post">
+        <label for="new_bid">Enter your bid (${{ highest_bid_price + 1 }} or more):</label>
+        <input type="number" name="new_bid" id="new_bid" step="0.01" min="{{ highest_bid_price + 1 }}" required>
+        <button type="submit">Place Bid</button>
+    </form>
+{% endblock %}

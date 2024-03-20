@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+<div class="container">
+  <h2>Notifications</h2>
+  <ul class="list-group">
+    {% for notification in notifications %}
+      <li class="list-group-item">
+        {{ notification.Message }}
+        {% if "Congratulations" in notification.Message %}
+          <a href="{{ url_for('make_payment', listing_id=notification.Listing_ID) }}" class="btn btn-primary">Proceed to Payment</a>
+        {% endif %}
+      </li>
+    {% endfor %}
+  </ul>
+</div>
+
+</body>
+</html>
